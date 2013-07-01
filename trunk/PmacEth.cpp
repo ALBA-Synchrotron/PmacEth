@@ -162,7 +162,14 @@ void PmacEth::init_device()
 	attr_Velocity_read=new Tango::DevLong;
 	attr_FollowErr_read=new Tango::DevLong;
 	sockfd=-1;
-	set_state(Tango::OFF);
+        try
+        {
+            open_connection();
+        }
+        catch (...)
+        {
+            set_state(Tango::OFF);
+        }
 }
 
 
