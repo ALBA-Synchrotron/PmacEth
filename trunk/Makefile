@@ -98,7 +98,7 @@ LFLAGS =  $(DEBUG) $(LIB_DIRS) \
           -lomniDynamic4    \
           -lomnithread      \
           -lCOS4            \
-          -ldl -lpthread -lpcommx -lzmq
+          -ldl -lpthread -lpcommx
 endif
 
 
