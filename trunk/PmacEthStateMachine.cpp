@@ -581,6 +581,24 @@ bool PmacEth::is_GetPVariable_allowed(const CORBA::Any &any)
 	}
 	return true;
 }
+//+----------------------------------------------------------------------------
+//
+// method :         PmacEth::is_GetPVariableRange_allowed
+// 
+// description :    Execution allowed for GetPVariable command.
+//
+//-----------------------------------------------------------------------------
+bool PmacEth::is_GetPVariableRange_allowed(const CORBA::Any &any)
+{
+    if (get_state() == Tango::OFF)
+    {
+        //  End of Generated Code
+
+        //  Re-Start of Generated Code
+        return false;
+    }
+    return true;
+}
 // //+----------------------------------------------------------------------------
 // //
 // // method : 		PmacEth::is_SetPVariable_allowed

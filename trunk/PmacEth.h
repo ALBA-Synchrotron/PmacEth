@@ -288,6 +288,10 @@ public :
  */
 	virtual bool is_GetPVariable_allowed(const CORBA::Any &any);
 /**
+ *      Execution allowed for GetPVariableRange command.
+ */
+        virtual bool is_GetPVariableRange_allowed(const CORBA::Any &any);
+/**
  *	Execution allowed for SetPVariable command.
  */
 	virtual bool is_SetPVariable_allowed(const CORBA::Any &any);
@@ -518,6 +522,15 @@ public :
  *	@exception DevFailed
  */
 	Tango::DevDouble	get_pvariable(Tango::DevULong);
+/**
+ * Report the values of the range of P variables indicated in Command Argin.
+ *  @param  argin   P variable range start
+ *  @param  argin   P variable range end
+ *  @return P variable values
+ *  @exception DevFailed
+ */
+        Tango::DevVarDoubleArray*    get_pvariablerange(const Tango::DevVarULongArray*);
+
 /**
  * Set the P variable indicated in the first element of Command Argin to
  *	the value specified by the second element of Command Argin.

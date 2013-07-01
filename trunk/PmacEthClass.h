@@ -408,7 +408,27 @@ public:
 	{return (static_cast<PmacEth *>(dev))->is_GetPVariable_allowed(any);}
 };
 
+class GetPVariableRangeCmd : public Tango::Command
+{
+public:
+    GetPVariableRangeCmd(const char   *name,
+                   Tango::CmdArgType in,
+                   Tango::CmdArgType out,
+                   const char        *in_desc,
+                   const char        *out_desc,
+                   Tango::DispLevel  level)
+    :Command(name,in,out,in_desc,out_desc, level)   {};
 
+    GetPVariableRangeCmd(const char   *name,
+                   Tango::CmdArgType in,
+                   Tango::CmdArgType out)
+    :Command(name,in,out)   {};
+    ~GetPVariableRangeCmd() {};
+
+    virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
+    virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
+    {return (static_cast<PmacEth *>(dev))->is_GetPVariableRange_allowed(any);}
+};
 
 class CoordSysStatusCmd : public Tango::Command
 {

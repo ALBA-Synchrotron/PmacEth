@@ -1168,6 +1168,68 @@ Tango::DevDouble PmacEth::get_pvariable(Tango::DevULong argin)
 	  argout=atof(buf);
 	return argout;
 }
+/*
+ *  method: PmacEth::get_pvariable
+ *
+ *  description:    method to execute "GetPVariable"
+ *  Report the value of the P variable indicated in Command Argin.
+ *
+ * @param   argin   P variable number
+ * @return  P variable value
+ *
+ */
+//+------------------------------------------------------------------
+Tango::DevVarDoubleArray*    PmacEth::get_pvariablerange(const Tango::DevVarULongArray* argin)
+{
+    Tango::DevVarDoubleArray*    argout ;
+    DEBUG_STREAM << "PmacEth::get_pvariablerange(): entering... !" << endl;
+
+    //  Add your own code to control device here
+    if(argin->length() != 2)
+      Tango::Except::throw_exception( (const char*) ("TANGO_DEVICE_ERROR"),
+                                        (const char*) ("Invalid number of parameters. Expects 2: beginRange and endRange\n"),
+                                        (const char*) ("PmacEth::get_pvariablerange"));
+
+    const unsigned long begin        = (*argin)[0];
+    const unsigned long end          = (*argin)[1];
+
+    if(begin > end) 
+      Tango::Except::throw_exception( (const char*) ("TANGO_DEVICE_ERROR"),
+                                        (const char*) ("Wrong parameters: begin of range has to be lower than end.\n"),
+                                        (const char*) ("PmacEth::get_pvariablerange"));
+    if ((end - begin) > 99)
+      Tango::Except::throw_exception( (const char*) ("TANGO_DEVICE_ERROR"),
+                                        (const char*) ("Wrong parameters: max range is 100 variables.\n"),
+                                        (const char*) ("PmacEth::get_pvariablerange"));
+    char buf[1400];
+
+    sprintf(buf,"P%d..%d",begin,end);
+    int nrOfChars = pmac_get_response(sockfd,buf,1400);
+    if(nrOfChars < 0)
+      Tango::Except::throw_exception("Error:get_pvariable","Can't get P variables","Device server GetPVariableRange",Tango::ERR);
+    else
+    {
+      vector<double> pvars;
+      const char delim[2] = {char(13), char(6)};
+      char *      save;
+      char *      p;
+
+      for (p = strtok_r(buf, delim, &save); p; p = strtok_r(NULL, delim, &save))
+      {
+        pvars.push_back(atof(p));
+        //printf("%s\t%f\n",p, atof(p));
+      }
+
+      argout = new Tango::DevVarDoubleArray();
+      argout->length(pvars.size());
+
+      vector<double>::iterator it;
+      int i;
+      for (i = 0, it = pvars.begin(); it != pvars.end(); it++, i++)
+        (*argout)[i] = *it;
+    }
+    return argout;
+}
 
 //+------------------------------------------------------------------
 /**
@@ -1398,13 +1460,13 @@ Tango::DevString PmacEth::online_cmd(Tango::DevString argin)
 	//	See "TANGO Device Server Programmer's Manual"
 	//		(chapter : Writing a TANGO DS / Exchanging data)
 	//------------------------------------------------------------
-	Tango::DevString	argout  = new char[1024];
+	Tango::DevString	argout  = new char[8192];
 
 	DEBUG_STREAM << "PmacEth::online_cmd(): entering... !" << endl;
 	int cmd_length = strlen(argin);
-	char buf[cmd_length];
+	char buf[8192];
 	strcpy(buf,argin);
-	int nrOfChar = pmac_get_response(sockfd,buf,1024);
+	int nrOfChar = pmac_get_response(sockfd,buf,8192);
 	if(nrOfChar < 0)
 	  strcpy(argout,"Error");
 	else
@@ -1412,7 +1474,7 @@ Tango::DevString PmacEth::online_cmd(Tango::DevString argin)
 	  if (int(buf[0]) == 6)
 	    strcpy(argout,"Acknowledge");
 	  else
- 	    strncpy(argout,buf,1024);
+ 	    strncpy(argout,buf,nrOfChar);
 	}
 	return argout;
 }

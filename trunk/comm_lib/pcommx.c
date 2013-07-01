@@ -65,7 +65,7 @@ int close_pmac_device(int sockfd)
 int pmac_get_response(int sockfd, char *buf, int buf_len)
 {
   struct EthernetCmd EthCmd;
-  char cResponse[1404];
+  char cResponse[1400];
   int retval;
   
   if(sockfd<0)
@@ -84,7 +84,7 @@ int pmac_get_response(int sockfd, char *buf, int buf_len)
       perror("pmac_get_response: can't send message to controller");
       return(ERR_COMM1);
     }
-  if((retval=recv(sockfd,cResponse,1404,0))==-1)
+  if((retval=recv(sockfd,cResponse,1400,0))==-1)
     {
       perror("pmac_get_response: can't get response message from controller");
       return(ERR_COMM2);
