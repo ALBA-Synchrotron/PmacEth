@@ -1,0 +1,39 @@
+Author: zreszela@cells.es
+
+Here you will find information how to compile and use PmacEth device server:
+
+PmacEth device server supports only linux platform, 
+and is compatible with Pmac2 and Turbo Pmac2 motion controllers
+It requires tango libraries (and includes - for compilation).  
+
+1. Compilation of communication library
+	In comm_lib directory execute make command.
+
+2. Compilation of device server.
+	Makefile uses SICILIA environment variable as a root place of tango system. 
+	SICILIA name comes from internal ALBA development configuration, 
+	and will be change soon to TANGO_HOME. For the moment please treat it as TANGO_HOME 
+	and forgive me that:)
+	TANGO_HOME(SICILIA) environment variable points to tango system home.
+	It requires at least following directory structure:
+
+	TANGO_HOME 
+	|---include     (subdirectory with tango, omniORB include files)
+	|---lib         (subdirectory with tango, omniORG shared libraries)
+
+3. Configuration of PmacEth device server in Tango Database.
+	In database create device server PmacEth instance, with one device of class PmacEth.
+	Add device property IP_address with value corresponding to ip of the controller.
+
+4. Start your server. 
+
+5. Device will be OFF state until you call OpenCommunication command. 
+	After that, you can enjoy work with PmacEth device server:)
+
+   
+
+
+   
+
+  
+ 
