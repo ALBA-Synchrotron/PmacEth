@@ -1,3 +1,4 @@
+/*----- PROTECTED REGION ID(ClassFactory.cpp) ENABLED START -----*/
 static const char *RcsId = "$Header:  $";
 //+=============================================================================
 //
@@ -42,3 +43,4 @@ void Tango::DServer::class_factory()
 	add_class(PmacEth_ns::PmacEthClass::init("PmacEth"));
 
 }
+/*----- PROTECTED REGION END -----*/
